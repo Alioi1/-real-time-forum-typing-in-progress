@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Forum</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav id="navbar" style="display:none">
+  <div class="nav-logo">Forum</div>
+  <div class="nav-links">
+    <button onclick="showView('feed')">Posts</button>
+    <button onclick="showNewPost()">+ New Post</button>
+    <span id="nav-user"></span>
+    <button id="btn-logout" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div id="app">
+
+  <div id="view-auth" class="auth-wrap">
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <div id="tab-login">
+        <h2>Login</h2>
+        <input id="login-id" placeholder="Nickname or Email" />
+        <input id="login-pass" type="password" placeholder="Password" />
+        <button onclick="doLogin()">Login</button>
+        <p id="login-err" class="err"></p>
+      </div>
+
+      <div id="tab-register" style="display:none">
+        <h2>Register</h2>
+        <input id="reg-nick" placeholder="Nickname *" />
+        <input id="reg-email" type="email" placeholder="Email *" />
+        <input id="reg-pass" type="password" placeholder="Password *" />
+        <input id="reg-fname" placeholder="First Name" />
+        <input id="reg-lname" placeholder="Last Name" />
+        <input id="reg-age" type="number" placeholder="Age" />
+        <select id="reg-gender">
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        <button onclick="doRegister()">Register</button>
+        <p id="reg-err" class="err"></p>
+        <p id="reg-ok" class="ok"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-main" style="display:none" class="main-layout">
+
+    <div class="posts-area">
+
+      <div id="view-feed">
+        <div class="filter-bar">
+          <button onclick="loadPosts('')" class="cat-btn active">All</button>
+          <button onclick="loadPosts('General')" class="cat-btn">General</button>
+          <button onclick="loadPosts('Tech')" class="cat-btn">Tech</button>
+          <button onclick="loadPosts('News')" class="cat-btn">News</button>
+          <button onclick="loadPosts('Fun')" class="cat-btn">Fun</button>
+        </div>
+        <div id="posts-list"></div>
+      </div>
+
+      <div id="view-new-post" style="display:none">
+        <h2>Create Post</h2>
+        <input id="post-title" placeholder="Title" />
+        <select id="post-cat">
+          <option value="General">General</option>
+          <option value="Tech">Tech</option>
+          <option value="News">News</option>
+          <option value="Fun">Fun</option>
+        </select>
+        <textarea id="post-content" placeholder="Write your post..."></textarea>
+        <button onclick="submitPost()">Publish</button>
+        <button onclick="showView('feed')">Cancel</button>
+        <p id="post-err" class="err"></p>
+      </div>
+
+      <div id="view-post" style="display:none">
+        <button onclick="showView('feed')">&larr; Back</button>
+        <div id="post-detail"></div>
+        <h3>Comments</h3>
+        <div id="comments-list"></div>
+        <div class="comment-form">
+          <textarea id="comment-text" placeholder="Write a comment..."></textarea>
+          <button onclick="submitComment()">Comment</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="chat-sidebar">
+      <h3>Users</h3>
+      <div id="users-list"></div>
+
+      <div id="chat-box" style="display:none">
+        <div class="chat-header">
+          <strong id="chat-with-name"></strong>
+          <button onclick="closeChat()">✕</button>
+        </div>
+        <div id="chat-messages" onscroll="onChatScroll()"></div>
+
+        <div id="typing-indicator" style="display:none">
+          <span id="typing-name"></span>
+          <span class="typing-dots">
+            <span></span><span></span><span></span>
+          </span>
+        </div>
+
+        <div class="chat-input-row">
+          <input id="chat-input" placeholder="Message..."
+            onkeydown="if(event.key==='Enter') sendMsg()"
+            oninput="onTyping()"
+            onblur="onStopTyping()" />
+          <button onclick="sendMsg()">Send</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
